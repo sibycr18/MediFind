@@ -9,7 +9,7 @@ app = Flask(__name__)
 ai = MetaAI()
 CORS(app)
 
-proxies = {
+proxy = {
     "http": "188.166.229.121	:80",
     "https": "http://204.236.137.68	:80"
 }
@@ -56,7 +56,7 @@ def get_medicine_info(medicine):
     Respond strictly in this JSON format, replacing placeholders with accurate and relevant information. If the medicine is not found, ensure the `name` field contains "Medicine not found" and fill other fields with appropriate placeholders or leave them empty if necessary. Confidence should reflect the certainty of the response.
     """
 
-    response = ai.prompt(message=prompt, proxies=proxies)
+    response = ai.prompt(message=prompt, proxy=proxy)
     return response["message"]
 
 @app.route('/getimages', methods=['GET'])
