@@ -1,65 +1,84 @@
 from flask import Flask, jsonify, request
 import requests
-from meta_ai_api import MetaAI
+from together import Together
+from pydantic import BaseModel, Field
 from flask_cors import CORS
 from dotenv import load_dotenv
 import os
-
-
-proxy = {
-    "http": "188.166.229.121	:80",
-    "https": "http://204.236.137.68	:80"
-}
+import json
 
 app = Flask(__name__)
-ai = MetaAI(proxy=proxy)
+together = Together()
 CORS(app)
-
 
 load_dotenv()
 API_KEY = str(os.getenv("GOOGLE_API_KEY"))
 CX_ID = str(os.getenv("GOOGLE_CX_ID"))
 
+# Define the schema for the medicine information
+class MedicineInfo(BaseModel):
+    name: str = Field(description="Medicine name (without contents). Use 'Medicine not found' if the medicine cannot be identified.")
+    description: str = Field(description="Detailed explanation of the medicine's use, contents, and how it works in an easy-to-understand way.")
+    sideEffects: list[str] = Field(description="List of confirmed side effects. Include only significant side effects, exceed 3 only if necessary.")
+    usage: str = Field(description="Concise instructions on how to use or take the medicine.")
+    warnings: list[str] = Field(description="List of critical warnings or precautions. Only include essential information.")
+    alternatives: list[str] = Field(description="List of brand names of alternative medicines, if any. Leave empty if no alternatives are found.")
+    confidence: float = Field(description="Confidence score between 0 and 1 indicating reliability of the information.")
+
 @app.route("/", methods=["GET"])
 def hello_world():
-    return {"status" : "Connected"}
+    return {"status": "Connected"}
 
 @app.route("/getinfo/<medicine>", methods=["GET"])
 def get_medicine_info(medicine):
-    prompt = f"""
-    You are a highly knowledgeable and precise assistant specializing in medicine analysis. Your task is to analyze a given medicine name and respond with accurate, concise, and user-friendly information formatted strictly as JSON. Follow these rules: 
+    # prompt = f"""
+    # You are a highly knowledgeable and precise assistant specializing in medicine analysis. Your task is to analyze a given medicine name and respond with accurate, concise, and user-friendly information formatted strictly as JSON. Follow these rules: 
 
-    1. Respond only in the provided JSON structure. Do not include any text outside the JSON.
-    2. Use placeholders only when necessary, replacing them with specific and reliable details whenever possible. If the medicine is not found, use "Medicine not found" in the `name` field.
-    3. Ensure that all provided information is accurate, non-overwhelming, and easy to understand for general users. 
-    4. Only include side effects, warnings, and alternatives that are well-established and important, avoiding speculation or exhaustive lists. 
-    5. Assign a `confidence` score (0 to 1) based on the reliability of the response.
+    # 1. Respond only in the provided JSON structure. Do not include any text outside the JSON.
+    # 2. Use placeholders only when necessary, replacing them with specific and reliable details whenever possible. If the medicine is not found, use "Medicine not found" in the `name` field.
+    # 3. Ensure that all provided information is accurate, non-overwhelming, and easy to understand for general users. 
+    # 4. Only include side effects, warnings, and alternatives that are well-established and important, avoiding speculation or exhaustive lists. 
+    # 5. Assign a `confidence` score (0 to 1) based on the reliability of the response.
 
-    ### JSON Format:
-    {{
-        "name": "Medicine name (without contents). Use 'Medicine not found' if the medicine cannot be identified.",
-        "description": "Detailed explanation of the medicine's use, contents and how it works in easy to understand way.",
-        "sideEffects": [
-            "List of confirmed side effects. Include only significant side effects, exceed 3 only if necessary."
-        ],
-        "usage": "Concise instructions on how to use or take the medicine.",
-        "warnings": [
-            "List of critical warnings or precautions. Only include essential information."
-        ],
-        "alternatives": [
-            "List of brand names of alternative medicines, if any. Provide generic names or equivalents that serve a similar purpose. Leave empty if no alternatives are found."
-        ],
-        "confidence": Confidence score between 0 and 1 indicating reliability of the information.
-    }}
+    # ### JSON Format:
+    # {{
+    #     "name": "Medicine name (without contents). Use 'Medicine not found' if the medicine cannot be identified.",
+    #     "description": "Detailed explanation of the medicine's use, contents and how it works in easy to understand way.",
+    #     "sideEffects": [
+    #         "List of confirmed side effects. Include only significant side effects, exceed 3 only if necessary."
+    #     ],
+    #     "usage": "Concise instructions on how to use or take the medicine.",
+    #     "warnings": [
+    #         "List of critical warnings or precautions. Only include essential information."
+    #     ],
+    #     "alternatives": [
+    #         "List of brand names of alternative medicines, if any. Provide generic names or equivalents that serve a similar purpose. Leave empty if no alternatives are found."
+    #     ],
+    #     "confidence": Confidence score between 0 and 1 indicating reliability of the information.
+    # }}
 
-    ### Example Input:
-    Medicine: {medicine}
+    # ### Input:
+    # Medicine: {medicine}
+    # """
 
-    Respond strictly in this JSON format, replacing placeholders with accurate and relevant information. If the medicine is not found, ensure the `name` field contains "Medicine not found" and fill other fields with appropriate placeholders or leave them empty if necessary. Confidence should reflect the certainty of the response.
-    """
+    try:
+        response = together.chat.completions.create(
+            messages=[
+                {"role": "system", "content": "The following is a name of a medicine or its content Your job it to generate the medicine information. Only answer in JSON"},
+                {"role": "user", "content": str(medicine)}
+            ],
+            model="meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo",
+            response_format={
+                "type": "json_object",
+                "schema": MedicineInfo.model_json_schema()
+            }
+        )
 
-    response = ai.prompt(message=prompt)
-    return response["message"]
+        output = json.loads(response.choices[0].message.content)
+        return jsonify(output)
+
+    except Exception as e:
+        return jsonify({'error': f'An error occurred: {str(e)}'}), 500
 
 @app.route('/getimages', methods=['GET'])
 def get_images():
