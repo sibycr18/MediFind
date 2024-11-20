@@ -14,7 +14,6 @@ together = Together()
 CORS(app)
 
 API_KEY = str(os.getenv("GOOGLE_API_KEY"))
-CX_ID = str(os.getenv("GOOGLE_CX_ID"))
 
 # Define the schema for the medicine information
 class MedicineInfo(BaseModel):
@@ -38,7 +37,7 @@ def get_medicine_info(medicine):
                 {"role": "system", "content": "The following is the name of a medicine. Your job it to find detailed information about the given medicine. Only answer in JSON"},
                 {"role": "user", "content": str(medicine)}
             ],
-            model="meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo",
+            model="meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo",
             response_format={
                 "type": "json_object",
                 "schema": MedicineInfo.model_json_schema()
@@ -59,7 +58,7 @@ def get_images():
         if not medicine_name:
             return jsonify({'error': 'Medicine name is required'}), 400
 
-        url = f'https://www.googleapis.com/customsearch/v1?q={medicine_name}&searchType=image&key={API_KEY}&cx={CX_ID}&num=2'
+        url = f'https://www.googleapis.com/customsearch/v1?q={medicine_name}&searchType=image&key={API_KEY}&cx=033acfa57b5fe449a&num=2'
         response = requests.get(url)
         
         data = response.json()
