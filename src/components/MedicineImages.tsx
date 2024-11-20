@@ -5,7 +5,7 @@ interface MedicineImagesProps {
     medicineName: string;
 }
 
-const URL = process.env.VITE_API_URL;
+const API_URL = import.meta.env.VITE_API_URL;
 
 const MedicineImages: React.FC<MedicineImagesProps> = ({ medicineName }) => {
     const [images, setImages] = useState<string[]>([]);
@@ -15,7 +15,7 @@ const MedicineImages: React.FC<MedicineImagesProps> = ({ medicineName }) => {
         const fetchImages = async () => {
             try {
                 const response = await fetch(
-                    `${URL}/getimages?medicine=${encodeURIComponent(medicineName)}`
+                    `${API_URL}/getimages?medicine=${encodeURIComponent(medicineName)}`
                 );
                 
                 const data = await response.json();
