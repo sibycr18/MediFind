@@ -5,8 +5,8 @@ interface MedicineImagesProps {
     medicineName: string;
 }
 // Google Search Components
-const API_KEY = import.meta.env.GOOGLE_API_KEY;
-const CX_ID = import.meta.env.GOOGLE_CX_ID;
+const API_KEY = process.env.GOOGLE_API_KEY;
+const CX_ID = process.env.GOOGLE_CX_ID;
 
 const MedicineImages: React.FC<MedicineImagesProps> = ({ medicineName }) => {
     const [images, setImages] = useState<string[]>([]);
