@@ -17,13 +17,13 @@ API_KEY = str(os.getenv("GOOGLE_API_KEY"))
 
 # Define the schema for the medicine information
 class MedicineInfo(BaseModel):
-    name: str = Field(description="Medicine name (It should be the brand name, not the content of the medicine). Return 'Medicine not found' if the medicine cannot be identified.")
-    description: str = Field(description="Explain the medicine's use and its working in a detailed but easy to understand way. Should be atleast two paragraphs.")
-    sideEffects: list[str] = Field(description="List of confirmed side effects. Include only significant side effects, exceed 3 only if necessary.")
-    usage: str = Field(description="Concise instructions on how to use or take the medicine.")
-    warnings: list[str] = Field(description="List of critical warnings or precautions. Only include essential information.")
-    alternatives: list[str] = Field(description="List of brand names of alternative medicines, if any. Leave empty if no alternatives are found.")
-    confidence: float = Field(description="Confidence score between 0 and 1 indicating reliability of the information.")
+    name: str = Field(description="Name of the medicine")
+    description: str = Field(description="Medicine's use and working")
+    sideEffects: list[str] = Field(description="List of confirmed side effects.")
+    usage: str = Field(description="Instructions on how to use or take the medicine.")
+    warnings: list[str] = Field(description="List of precautions")
+    alternatives: list[str] = Field(description="List of brand names of alternative medicines, if any.")
+    confidence: float = Field(description="Value between 0 and 1 depending on the confidence of the result")
 
 @app.route("/", methods=["GET"])
 def hello_world():
