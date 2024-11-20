@@ -18,7 +18,7 @@ API_KEY = str(os.getenv("GOOGLE_API_KEY"))
 # Define the schema for the medicine information
 class MedicineInfo(BaseModel):
     name: str = Field(description="Name of the medicine")
-    description: str = Field(description="Medicine's use and working")
+    useAndWorking: str = Field(description="Medicine's use and working")
     sideEffects: list[str] = Field(description="List of confirmed side effects.")
     howToUse: str = Field(description="Instructions on how to use or take the medicine.")
     warnings: list[str] = Field(description="List of precautions")
