@@ -34,7 +34,7 @@ def get_medicine_info(medicine):
     try:
         response = together.chat.completions.create(
             messages=[
-                {"role": "system", "content": "The following is the name of a medicine. Your job it to find detailed information about the given medicine. Only answer in JSON"},
+                {"role": "system", "content": "You are a highly knowledgeable and precise assistant specializing in medicine analysis. Your task is to analyze a given medicine name and respond with accurate, concise, and user-friendly information formatted strictly as JSON."},
                 {"role": "user", "content": str(medicine)}
             ],
             model="meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo",
