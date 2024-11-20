@@ -11,9 +11,9 @@ load_dotenv()
 
 app = Flask(__name__)
 together = Together()
-
+CORS(app)
 # Allow only 'https://medi-find.vercel.app/' to access your Flask app
-CORS(app, resources={r"/*": {"origins": "https://medi-find.vercel.app/"}})
+# CORS(app, resources={r"/*": {"origins": "https://medi-find.vercel.app/"}})
 # Allow all origins to access the app temporarily (including localhost)
 # CORS(app, resources={r"/*": {"origins": "*"}})
 
