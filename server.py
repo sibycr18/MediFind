@@ -14,7 +14,8 @@ together = Together()
 
 # Allow only 'https://medi-find.vercel.app/' to access your Flask app
 # CORS(app, resources={r"/*": {"origins": "https://medi-find.vercel.app/"}})
-CORS(app)
+# Allow all origins to access the app temporarily (including localhost)
+CORS(app, resources={r"/*": {"origins": "*"}})
 
 API_KEY = str(os.getenv("GOOGLE_API_KEY"))
 
