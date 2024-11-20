@@ -5,11 +5,11 @@ import MedicineImages from './MedicineImages';
 interface AnalysisResultProps {
     data: {
         name?: string;
-        description?: string;
+        useAndWorking?: string;
         sideEffects?: string[];
         alternatives?: string[];
         confidence?: number;
-        usage?: string;
+        howToUse?: string;
         warnings?: string[];
     } | null;
     error?: string;
@@ -41,19 +41,19 @@ export const AnalysisResult: React.FC<AnalysisResultProps> = ({ data, error }) =
                             {data.name}
                         </h2>
                     </div>
-                    <p className="text-sm sm:text-base text-gray-600">{data.description}</p>
+                    <p className="text-sm sm:text-base text-gray-600">{data.useAndWorking}</p>
                 </div>
             )}
 
             {(data.confidence ?? 0) > 0.6 && data.name && <MedicineImages medicineName={data.name} />}
 
-            {data.usage && (
+            {data.howToUse && (
                 <div className="bg-white shadow rounded-lg p-4 sm:p-6">
                     <div className="flex items-center space-x-2 mb-3">
                         <Info className="h-5 w-5 text-blue-600 flex-shrink-0" />
                         <h3 className="font-semibold text-gray-900 text-sm sm:text-base">Usage</h3>
                     </div>
-                    <p className="text-sm sm:text-base text-gray-600">{data.usage}</p>
+                    <p className="text-sm sm:text-base text-gray-600">{data.howToUse}</p>
                 </div>
             )}
 
