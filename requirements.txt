@@ -2,5 +2,5 @@ Flask
 Flask-CORS
 requests
 python-dotenv
-meta_ai_api
+meta-ai-api==1.0.6
 gunicorn
