@@ -3,3 +3,4 @@ Flask-CORS
 requests
 python-dotenv
 meta_ai_api
+gunicorn
