@@ -14,7 +14,6 @@ CORS(app)
 load_dotenv()
 API_KEY = str(os.getenv("GOOGLE_API_KEY"))
 CX_ID = str(os.getenv("GOOGLE_CX_ID"))
-# print(f"{API_KEY=} {CX_ID=}")
 
 # Define the schema for the medicine information
 class MedicineInfo(BaseModel):
@@ -53,7 +52,6 @@ def get_medicine_info(medicine):
 
 @app.route('/getimages', methods=['GET'])
 def get_images():
-    print(f"{API_KEY=} {CX_ID=}")
     try:
         medicine_name = request.args.get('medicine')
 
