@@ -4,9 +4,6 @@ import { Images } from 'lucide-react';
 interface MedicineImagesProps {
     medicineName: string;
 }
-// Google Search Components
-const API_KEY = process.env.GOOGLE_API_KEY;
-const CX_ID = process.env.GOOGLE_CX_ID;
 
 const MedicineImages: React.FC<MedicineImagesProps> = ({ medicineName }) => {
     const [images, setImages] = useState<string[]>([]);
@@ -16,14 +13,14 @@ const MedicineImages: React.FC<MedicineImagesProps> = ({ medicineName }) => {
         const fetchImages = async () => {
             try {
                 const response = await fetch(
-                    `https://www.googleapis.com/customsearch/v1?q=${encodeURIComponent(
-                        medicineName
-                    )}&searchType=image&key=${API_KEY}&cx=${CX_ID}`
+                    `http://127.0.0.1:8009/getimages?medicine=${encodeURIComponent(medicineName)}`
                 );
+                
                 const data = await response.json();
-                const imageResults = data.items?.slice(0, 2).map((item: any) => item.link) || [];
-                setImages(imageResults);
+                console.log(data);
+                setImages(data.images);
             } catch (err) {
+                console.log(err);
                 setError('Failed to fetch images. Please try again later.');
             }
         };
