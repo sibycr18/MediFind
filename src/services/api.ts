@@ -1,10 +1,10 @@
 import axios from 'axios';
 
-const API_URL = 'http://localhost:8009/getinfo/';
+const API_URL = process.env.VITE_API_URL;
 
 export const analyzeMedicine = async (query: string) => {
   try {
-    const response = await axios.get(`${API_URL}${encodeURIComponent(query)}`, {
+    const response = await axios.get(`${API_URL}/getinfo/${encodeURIComponent(query)}`, {
       headers: {
         'Content-Type': 'application/json',
       }
