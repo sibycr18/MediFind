@@ -18,8 +18,8 @@ CX_ID = str(os.getenv("GOOGLE_CX_ID"))
 
 # Define the schema for the medicine information
 class MedicineInfo(BaseModel):
-    name: str = Field(description="Medicine name (without contents). Use 'Medicine not found' if the medicine cannot be identified.")
-    description: str = Field(description="Explain the medicine's use, its contents, and how it works in detailed and easy-to-understand way. Atleast two paragraphs.")
+    name: str = Field(description="Medicine name (It should be the brand name, not the content of the medicine). Return 'Medicine not found' if the medicine cannot be identified.")
+    description: str = Field(description="Explain the medicine's use, its contents, and why it is used in a detailed and easy-to-understand way. Should be atleast two paragraphs.")
     sideEffects: list[str] = Field(description="List of confirmed side effects. Include only significant side effects, exceed 3 only if necessary.")
     usage: str = Field(description="Concise instructions on how to use or take the medicine.")
     warnings: list[str] = Field(description="List of critical warnings or precautions. Only include essential information.")
@@ -35,7 +35,7 @@ def get_medicine_info(medicine):
     try:
         response = together.chat.completions.create(
             messages=[
-                {"role": "system", "content": "The following is a name of a medicine or its content. Your job it to generate detailed medicine information. Only answer in JSON"},
+                {"role": "system", "content": "The following is the name of a medicine. Your job it to find detailed information about the given medicine. Only answer in JSON"},
                 {"role": "user", "content": str(medicine)}
             ],
             model="meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo",
