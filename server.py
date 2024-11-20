@@ -14,18 +14,13 @@ together = Together()
 CORS(app)
 # Allow only 'https://medi-find.vercel.app/' to access your Flask app
 # CORS(app, resources={r"/*": {"origins": "https://medi-find.vercel.app/"}})
-# Allow all origins to access the app temporarily (including localhost)
-# CORS(app, resources={r"/*": {"origins": "*"}})
-
-# Allow localhost:5173 to access the server
-# CORS(app, resources={r"/*": {"origins": "http://localhost:5173"}})
 
 
 API_KEY = str(os.getenv("GOOGLE_API_KEY"))
 
 # Define the schema for the medicine information
 class MedicineInfo(BaseModel):
-    name: str = Field(description="Name of the medicine")
+    name: str = Field(description="Brand name of the medicine")
     useAndWorking: str = Field(description="Medicine's use and working")
     sideEffects: list[str] = Field(description="List of confirmed side effects.")
     howToUse: str = Field(description="Instructions on how to use or take the medicine.")
