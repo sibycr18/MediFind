@@ -16,7 +16,6 @@ interface AnalysisResultProps {
 }
 
 export const AnalysisResult: React.FC<AnalysisResultProps> = ({ data, error }) => {
-    console.log(data);
     if (error) {
         return (
             <div className="w-full max-w-2xl px-4 sm:px-0">
@@ -102,7 +101,7 @@ export const AnalysisResult: React.FC<AnalysisResultProps> = ({ data, error }) =
             )}
             <div className="mt-4 pt-4 text-sm text-gray-600 flex justify-center items-center text-center">
                 <span>
-                    <strong>Important Note:</strong> The information provided is for general guidance only and should not be considered professional medical advice. Always consult a healthcare professional before making medical decisions.
+                    <strong>Important Note:</strong> The information provided is gathered using AI. It is intended for general guidance only and should not be considered as professional medical advice. Always consult a healthcare professional before making medical decisions.
                 </span>
             </div>
         </div>
