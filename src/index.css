@@ -1,0 +1,45 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply antialiased text-gray-900;
+    background-color: #FFFFFF; /* White background */
+  }
+}
+
+@layer components {
+  .btn {
+    @apply px-4 py-2 rounded-lg font-medium transition-colors;
+  }
+  
+  .btn-primary {
+    @apply bg-blue-600 text-white hover:bg-blue-700;
+  }
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+  overflow-x: hidden; /* Prevent horizontal scroll */
+}
+
+body::before {
+  content: '';
+  position: fixed; /* Ensures the background is fixed */
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: radial-gradient(#2463EB 0.8px, transparent 0.8px), radial-gradient(#2463EB 0.8px, #FFFFFF 0.8px);
+  background-size: 32px 32px;
+  background-position: 0 0, 16px 16px;
+  opacity: 0.2; /* Light opacity */
+  pointer-events: none; /* Makes sure it doesn't interfere with clicks */
+  z-index: -1; /* Keep it behind the content */
+}
+
+* {
+  box-sizing: border-box;
+}
