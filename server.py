@@ -5,14 +5,16 @@ from flask_cors import CORS
 from dotenv import load_dotenv
 import os
 
-app = Flask(__name__)
-ai = MetaAI(proxy=proxy)
-CORS(app)
 
 proxy = {
     "http": "188.166.229.121	:80",
     "https": "http://204.236.137.68	:80"
 }
+
+app = Flask(__name__)
+ai = MetaAI(proxy=proxy)
+CORS(app)
+
 
 load_dotenv()
 API_KEY = str(os.getenv("GOOGLE_API_KEY"))
