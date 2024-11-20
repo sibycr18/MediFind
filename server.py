@@ -14,6 +14,7 @@ CORS(app)
 load_dotenv()
 API_KEY = str(os.getenv("GOOGLE_API_KEY"))
 CX_ID = str(os.getenv("GOOGLE_CX_ID"))
+print(f"{API_KEY=} {CX_ID=}")
 
 # Define the schema for the medicine information
 class MedicineInfo(BaseModel):
