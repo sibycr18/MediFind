@@ -20,7 +20,7 @@ class MedicineInfo(BaseModel):
     name: str = Field(description="Name of the medicine")
     description: str = Field(description="Medicine's use and working")
     sideEffects: list[str] = Field(description="List of confirmed side effects.")
-    usage: str = Field(description="Instructions on how to use or take the medicine.")
+    howToUse: str = Field(description="Instructions on how to use or take the medicine.")
     warnings: list[str] = Field(description="List of precautions")
     alternatives: list[str] = Field(description="List of brand names of alternative medicines, if any.")
     confidence: float = Field(description="Value between 0 and 1 depending on the confidence of the result")
