@@ -17,10 +17,9 @@ const MedicineImages: React.FC<MedicineImagesProps> = ({ medicineName }) => {
                 );
                 
                 const data = await response.json();
-                console.log(data);
                 setImages(data.images);
+                // console.log(data.images);
             } catch (err) {
-                console.log(err);
                 setError('Failed to fetch images. Please try again later.');
             }
         };
