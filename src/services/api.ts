@@ -10,7 +10,7 @@ export const analyzeMedicine = async (query: string) => {
       }
     });
 
-    // console.log('Response from API:', response.data);
+    console.log('Response from API(Medicine Analysis):', response.data);
     return response.data;
   } catch (error) {
     console.error('Failed to analyze medicine:', error);
