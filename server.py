@@ -11,7 +11,9 @@ load_dotenv()
 
 app = Flask(__name__)
 together = Together()
-CORS(app)
+
+# Allow only 'https://medi-find.vercel.app/' to access your Flask app
+CORS(app, resources={r"/*": {"origins": "https://medi-find.vercel.app/"}})
 
 API_KEY = str(os.getenv("GOOGLE_API_KEY"))
 
@@ -21,7 +23,7 @@ class MedicineInfo(BaseModel):
     useAndWorking: str = Field(description="Medicine's use and working")
     sideEffects: list[str] = Field(description="List of confirmed side effects.")
     howToUse: str = Field(description="Instructions on how to use or take the medicine.")
-    warnings: list[str] = Field(description="Possible warnings")
+    warnings: list[str] = Field(description="List of possible warnings")
     alternatives: list[str] = Field(description="List of brand names of alternative medicines, if any.")
     confidence: float = Field(description="Value between 0 and 1 depending on the confidence of the result")
 
