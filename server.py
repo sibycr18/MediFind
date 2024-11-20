@@ -7,18 +7,19 @@ from dotenv import load_dotenv
 import os
 import json
 
+load_dotenv()
+
 app = Flask(__name__)
 together = Together()
 CORS(app)
 
-load_dotenv()
 API_KEY = str(os.getenv("GOOGLE_API_KEY"))
 CX_ID = str(os.getenv("GOOGLE_CX_ID"))
 
 # Define the schema for the medicine information
 class MedicineInfo(BaseModel):
     name: str = Field(description="Medicine name (without contents). Use 'Medicine not found' if the medicine cannot be identified.")
-    description: str = Field(description="Detailed explanation of the medicine's use, contents, and how it works in an easy-to-understand way.")
+    description: str = Field(description="Explain the medicine's use, its contents, and how it works in detailed and easy-to-understand way. Atleast two paragraphs.")
     sideEffects: list[str] = Field(description="List of confirmed side effects. Include only significant side effects, exceed 3 only if necessary.")
     usage: str = Field(description="Concise instructions on how to use or take the medicine.")
     warnings: list[str] = Field(description="List of critical warnings or precautions. Only include essential information.")
@@ -34,7 +35,7 @@ def get_medicine_info(medicine):
     try:
         response = together.chat.completions.create(
             messages=[
-                {"role": "system", "content": "The following is a name of a medicine or its content Your job it to generate the medicine information. Only answer in JSON"},
+                {"role": "system", "content": "The following is a name of a medicine or its content. Your job it to generate detailed medicine information. Only answer in JSON"},
                 {"role": "user", "content": str(medicine)}
             ],
             model="meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo",
