@@ -2,7 +2,6 @@ Flask
 Flask-CORS
 requests
 python-dotenv
-meta-ai-api==1.0.6
 gunicorn
 lxml_html_clean
 together
