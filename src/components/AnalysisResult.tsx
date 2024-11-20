@@ -16,6 +16,7 @@ interface AnalysisResultProps {
 }
 
 export const AnalysisResult: React.FC<AnalysisResultProps> = ({ data, error }) => {
+    console.log(data);
     if (error) {
         return (
             <div className="w-full max-w-2xl px-4 sm:px-0">
