@@ -46,7 +46,7 @@ export const AnalysisResult: React.FC<AnalysisResultProps> = ({ data, error }) =
                 </div>
             )}
 
-            {(data.confidence ?? 0) > 0.6 && data.name && <MedicineImages medicineName={data.name} />}
+            {(data.confidence ?? 0) >= 0.6 && data.name && <MedicineImages medicineName={data.name} />}
 
             {data.howToUse && (
                 <div className="bg-white shadow rounded-lg p-4 sm:p-6">
